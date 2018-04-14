@@ -6,19 +6,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.footballregistration.common.Constants;
+import org.footballregistration.response.EventDetailResponse;
 import org.footballregistration.response.EventListResponse;
+import org.footballregistration.response.model.EventDetailInfo;
 import org.footballregistration.response.model.EventInfo;
+import org.footballregistration.response.model.ProposerUserInfo;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
-import com.google.gson.annotations.SerializedName;
 
 @RestController
 public class EventController {
 
 	@RequestMapping(value = "/event/getEventList", method = POST, produces = "application/json;charset=UTF-8")
-	public String responseJson(){
+	public String getEventList(){
 
 		Gson gson = new Gson();
 
@@ -63,6 +65,63 @@ public class EventController {
 
 		String json = gson.toJson(response);
 		System.out.println("EventListResponse = " + json);
+		return json;
+	}
+
+	@RequestMapping(value = "/event/getEventDetail", method = POST, produces = "application/json;charset=UTF-8")
+	public String getEventDetail(){
+
+		Gson gson = new Gson();
+
+		EventDetailResponse response = new EventDetailResponse();
+
+		response.responseCode = Constants.RESPONSE_CODE_OK;
+
+		EventDetailInfo eventDetailInfo = new EventDetailInfo();
+		eventDetailInfo.eventId = 1;
+		eventDetailInfo.eventName = "足球活动1";
+		eventDetailInfo.status = "报名中";
+		eventDetailInfo.eventKbn = "训练";
+		eventDetailInfo.eventDate1 = "2018/05/01 上午10点00分";
+		eventDetailInfo.eventDate2 = "2018/05/01 上午11点00分";
+		eventDetailInfo.eventDate3 = "2018/05/01 下午13点00分";
+		eventDetailInfo.eventDate4 = "2018/05/01 下午14点00分";
+		eventDetailInfo.eventPlaceName = "000-0000-0000";
+		eventDetailInfo.eventPlaceX = "35.6895";
+		eventDetailInfo.eventPlaceY = "139.69169";
+		eventDetailInfo.eventCost = 1000;
+		eventDetailInfo.phoneNo = "000-0000-0000";
+		eventDetailInfo.comment = "踊跃报名!";
+		response.result.eventDetailInfo = eventDetailInfo;
+
+
+		ProposerUserInfo proposerUserInfo1 = new ProposerUserInfo();
+		proposerUserInfo1.userId = 1;
+		proposerUserInfo1.icon = "XXX";
+		proposerUserInfo1.comment = "这是1的备注";
+		proposerUserInfo1.selectEventDate1 = true;
+		proposerUserInfo1.selectEventDate2 = false;
+		proposerUserInfo1.selectEventDate3 = true;
+		proposerUserInfo1.selectEventDate4 = false;
+
+		ProposerUserInfo proposerUserInfo2 = new ProposerUserInfo();
+		proposerUserInfo2.userId = 1;
+		proposerUserInfo2.icon = "XXX";
+		proposerUserInfo2.comment = "这是2的备注";
+		proposerUserInfo2.selectEventDate1 = true;
+		proposerUserInfo2.selectEventDate2 = true;
+		proposerUserInfo2.selectEventDate3 = true;
+		proposerUserInfo2.selectEventDate4 = true;
+
+		List<ProposerUserInfo> proposerUserInfoList = new ArrayList<ProposerUserInfo>();
+		proposerUserInfoList.add(proposerUserInfo1);
+		proposerUserInfoList.add(proposerUserInfo2);
+
+		response.result.proposerUserCount = 2;
+		response.result.proposerUserList = proposerUserInfoList;
+
+		String json = gson.toJson(response);
+		System.out.println("EventDetailResponse = " + json);
 		return json;
 	}
 
