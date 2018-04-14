@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.footballregistration.dao.HelloWorldDao">
+	<resultMap id="HelloWorldResult" type="org.footballregistration.dao.entity.HelloWorld">
+        <result column="mykey" property="mykey" />
+        <result column="myvalue" property="myvalue" />
+    </resultMap>
+	<select id="selectMyValue" resultMap="HelloWorldResult" parameterType="String">
+		select mykey, myvalue from helloworld
+		where mykey= #{mykey}
+	</select>
+</mapper>
