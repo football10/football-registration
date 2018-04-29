@@ -11,7 +11,7 @@
         <result column="proposerUserId" property="proposerUserId" />
         <result column="eventDate1" property="eventDate1" />
         <result column="eventDate2" property="eventDate2" />
-        <result column="eventDate4" property="eventDate4" />
+        <result column="eventDate3" property="eventDate3" />
         <result column="eventDate4" property="eventDate4" />
         <result column="eventPlaceName" property="eventPlaceName" />
         <result column="eventPlaceX" property="eventPlaceX" />
@@ -43,6 +43,29 @@
 		from EVENT_INFO
 		where
 			EVENT_ID= #{eventId}
+	</select>
+	<select id="selectEventInfoByUserId" resultMap="EventInfoResult" parameterType="String">
+		select
+			EVENT_ID
+			,EVENT_NAME
+			,STATUS
+			,DEADLINE_DATE
+			,EVENT_KBN
+			,PROPOSER_USER_ID
+			,EVENT_DATE_1
+			,EVENT_DATE_2
+			,EVENT_DATE_3
+			,EVENT_DATE_4
+			,EVENT_PLACE_NAME
+			,EVENT_PLACE_X
+			,EVENT_PLACE_Y
+			,EVENT_COST
+			,COST_UNIT
+			,PHONE_NO
+			,COMMENT
+		from EVENT_INFO
+		where
+			PROPOSER_USER_ID= #{userId}
 	</select>
 	<insert id="insertEventInfo" parameterType="org.footballregistration.dao.entity.EventInfoEntity">
 		insert into EVENT_INFO
@@ -80,4 +103,24 @@
 			#{phone_no},
 			#{comment})
 	</insert>
+
+	<update id="updateEventInfo" parameterType="org.footballregistration.dao.entity.EventInfoEntity">
+		update EVENT_INFO set
+			EVENT_NAME = #{event_name},
+			,STATUS = #{status},
+			,DEADLINE_DATE = #{deadline_date},
+			,EVENT_KBN = #{event_kbn},
+			,PROPOSER_USER_ID = #{proposer_user_id},
+			,EVENT_DATE_1 = #{event_date_1},
+			,EVENT_DATE_2 = #{event_date_2},
+			,EVENT_DATE_3 = #{event_date_3},
+			,EVENT_DATE_4 = #{event_date_4},
+			,EVENT_PLACE_NAME = #{event_place_name},
+			,EVENT_PLACE_X = #{event_place_x},
+			,EVENT_PLACE_Y = #{event_place_y},
+			,EVENT_COST = #{event_cost},
+			,COST_UNIT = #{cost_unit},
+			,PHONE_NO = #{phone_no},
+			,COMMENT = #{comment}
+	</update>
 </mapper>

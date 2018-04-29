@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.footballregistration.dao.EventParticipantDao">
+	<resultMap id="EventParticipantResult" type="org.footballregistration.dao.entity.EventParticipantEntity">
+        <result column="eventId" property="eventId" />
+        <result column="participantUserId" property="participantUserId" />
+        <result column="eventDate1Flg" property="eventDate1Flg" />
+        <result column="eventDate2Flg" property="eventDate2Flg" />
+        <result column="eventDate3Flg" property="eventDate3Flg" />
+        <result column="eventDate4Flg" property="eventDate4Flg" />
+        <result column="comment" property="comment" />
+        <result column="answerDtime" property="answerDtime" />
+    </resultMap>
+	<select id="selectEventParticipantByEventId" resultMap="EventParticipantResult" parameterType="int">
+		select
+			EVENT_ID
+			,PARTICIPANT_USER_ID
+			,EVENT_DATE_1_FLG
+			,EVENT_DATE_2_FLG
+			,EVENT_DATE_3_FLG
+			,EVENT_DATE_4_FLG
+			,COMMENT
+			,ANSWER_DTIME
+		from EVENT_PARTICIPANT
+		where
+			EVENT_ID= #{eventId}
+	</select>
+	<select id="selectEventParticipantByUserId" resultMap="EventParticipantResult" parameterType="String">
+		select
+			EVENT_ID
+			,PARTICIPANT_USER_ID
+			,EVENT_DATE_1_FLG
+			,EVENT_DATE_2_FLG
+			,EVENT_DATE_3_FLG
+			,EVENT_DATE_4_FLG
+			,COMMENT
+			,ANSWER_DTIME
+		from EVENT_PARTICIPANT
+		where
+			PARTICIPANT_USER_ID= #{userId}
+	</select>
+	<insert id="insertEventParticipant" parameterType="org.footballregistration.dao.entity.EventParticipantEntity">
+		insert into EVENT_PARTICIPANT
+			(EVENT_ID
+			,PARTICIPANT_USER_ID
+			,EVENT_DATE_1_FLG
+			,EVENT_DATE_2_FLG
+			,EVENT_DATE_3_FLG
+			,EVENT_DATE_4_FLG
+			,COMMENT
+			,ANSWER_DTIME)
+		values (
+			#{event_id},
+			#{participant_user_id},
+			#{event_date_1_flg},
+			#{event_date_2_flg},
+			#{event_date_3_flg},
+			#{event_date_4_flg},
+			#{comment},
+			#{answer_dtime})
+	</insert>
+
+	<update id="updateEventParticipant" parameterType="org.footballregistration.dao.entity.EventParticipantEntity">
+		update EVENT_PARTICIPANT set
+			EVENT_ID = #{event_id},
+			PARTICIPANT_USER_ID = #{participant_user_id},
+			EVENT_DATE_1_FLG = #{event_date_1_flg},
+			EVENT_DATE_2_FLG = #{event_date_2_flg},
+			EVENT_DATE_3_FLG = #{event_date_3_flg},
+			EVENT_DATE_4_FLG = #{event_date_4_flg},
+			COMMENT = #{comment}),
+			ANSWER_DTIME = #{answer_dtime}
+	</update>
+</mapper>
