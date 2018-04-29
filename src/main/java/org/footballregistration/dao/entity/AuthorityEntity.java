@@ -1,6 +1,6 @@
 package org.footballregistration.dao.entity;
 
-public class Authority {
+public class AuthorityEntity {
 
 	// 权限组ID
 	public String group_Id;

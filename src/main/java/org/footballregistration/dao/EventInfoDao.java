@@ -1,13 +1,13 @@
 package org.footballregistration.dao;
 
-import org.footballregistration.dao.entity.EventInfo;
+import org.footballregistration.dao.entity.EventInfoEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EventInfoDao {
 
-	EventInfo selectEventInfo(int eventId);
+	EventInfoEntity selectEventInfo(int eventId);
 
-	long insertEventInfo(EventInfo eventInfo);
+	long insertEventInfo(EventInfoEntity eventInfo);
 
 }

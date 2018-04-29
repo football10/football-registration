@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.footballregistration.dao.EventInfoDao">
-	<resultMap id="EventInfoResult" type="org.footballregistration.dao.entity.EventInfo">
+	<resultMap id="EventInfoResult" type="org.footballregistration.dao.entity.EventInfoEntity">
         <result column="eventId" property="eventId" />
         <result column="eventName" property="eventName" />
         <result column="status" property="status" />
@@ -21,7 +21,7 @@
         <result column="phoneNo" property="phoneNo" />
         <result column="comment" property="comment" />
     </resultMap>
-	<select id="selectEventInfo" resultMap="EventInfoResult" parameterType="Long">
+	<select id="selectEventInfo" resultMap="EventInfoResult" parameterType="int">
 		select
 			EVENT_ID
 			,EVENT_NAME
@@ -44,7 +44,7 @@
 		where
 			EVENT_ID= #{eventId}
 	</select>
-	<insert id="insertEventInfo" parameterType="org.footballregistration.dao.entity.EventInfo">
+	<insert id="insertEventInfo" parameterType="org.footballregistration.dao.entity.EventInfoEntity">
 		insert into EVENT_INFO
 			(EVENT_NAME
 			,STATUS

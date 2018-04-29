@@ -1,9 +1,9 @@
 package org.footballregistration.dao.entity;
 
-public class EventInfo {
+public class EventInfoEntity {
 
 	// 活动ID
-	public long event_id;
+	public int event_id;
 	// 活动名
 	public String event_name;
 	// 状态
@@ -39,7 +39,7 @@ public class EventInfo {
 	public long getEvent_id() {
 		return event_id;
 	}
-	public void setEvent_id(long event_id) {
+	public void setEvent_id(int event_id) {
 		this.event_id = event_id;
 	}
 	public String getEvent_name() {
