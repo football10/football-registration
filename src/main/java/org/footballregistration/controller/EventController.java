@@ -11,6 +11,9 @@ import org.footballregistration.response.EventListResponse;
 import org.footballregistration.response.model.EventDetailInfo;
 import org.footballregistration.response.model.EventInfo;
 import org.footballregistration.response.model.ProposerUserInfo;
+import org.footballregistration.service.CreateEventService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,8 +22,11 @@ import com.google.gson.Gson;
 @RestController
 public class EventController {
 
+	@Autowired
+	private CreateEventService createEventSevice;
+
 	@RequestMapping(value = "/event/getEventList", method = POST, produces = "application/json;charset=UTF-8")
-	public String getEventList(){
+	public String getEventList(@RequestBody String jsonRequest){
 
 		Gson gson = new Gson();
 
@@ -69,7 +75,7 @@ public class EventController {
 	}
 
 	@RequestMapping(value = "/event/getEventDetail", method = POST, produces = "application/json;charset=UTF-8")
-	public String getEventDetail(){
+	public String getEventDetail(@RequestBody String jsonRequest){
 
 		Gson gson = new Gson();
 
@@ -123,6 +129,12 @@ public class EventController {
 		String json = gson.toJson(response);
 		System.out.println("EventDetailResponse = " + json);
 		return json;
+	}
+
+	// Event创建API
+	@RequestMapping(value = "/event/createEvent", method = POST, produces = "application/json;charset=UTF-8")
+	public String createEvent(@RequestBody String jsonRequest){
+		return createEventSevice.createEvent(jsonRequest);
 	}
 
 }
