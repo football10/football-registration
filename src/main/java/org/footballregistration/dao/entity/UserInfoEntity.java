@@ -1,9 +1,11 @@
 package org.footballregistration.dao.entity;
 
-public class UserInfo {
+public class UserInfoEntity {
 
 	// 用户ID
 	public String user_Id;
+	// 用户名
+	public String user_name;
 	// 头像
 	public String icon;
 	// 权限组ID
@@ -14,6 +16,12 @@ public class UserInfo {
 	}
 	public void setUser_Id(String user_Id) {
 		this.user_Id = user_Id;
+	}
+	public String getUser_name() {
+		return user_name;
+	}
+	public void setUser_name(String user_name) {
+		this.user_name = user_name;
 	}
 	public String getIcon() {
 		return icon;

@@ -15,5 +15,7 @@ public interface EventParticipantDao {
 	long insertEventParticipant(EventParticipantEntity eventParticipantEntity);
 	
 	long updateEventParticipant(EventParticipantEntity eventParticipantEntity);
+	
+	long deleteEventParticipant(EventParticipantEntity eventParticipantEntity);
 
 }

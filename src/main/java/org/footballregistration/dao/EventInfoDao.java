@@ -15,5 +15,7 @@ public interface EventInfoDao {
 	long insertEventInfo(EventInfoEntity eventInfo);
 	
 	long updateEventInfo(EventInfoEntity eventInfo);
+	
+	long deleteEventInfo(int eventId);
 
 }

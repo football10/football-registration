@@ -124,4 +124,11 @@
 			COMMENT = #{comment}
 		where EVENT_ID= #{event_id}
 	</update>
+
+	<delete id="deleteEventInfo" parameterType="int">
+		delete
+		from EVENT_INFO
+		where
+			EVENT_ID= #{eventId}
+	</delete>
 </mapper>
