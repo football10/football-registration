@@ -107,20 +107,21 @@
 	<update id="updateEventInfo" parameterType="org.footballregistration.dao.entity.EventInfoEntity">
 		update EVENT_INFO set
 			EVENT_NAME = #{event_name},
-			,STATUS = #{status},
-			,DEADLINE_DATE = #{deadline_date},
-			,EVENT_KBN = #{event_kbn},
-			,PROPOSER_USER_ID = #{proposer_user_id},
-			,EVENT_DATE_1 = #{event_date_1},
-			,EVENT_DATE_2 = #{event_date_2},
-			,EVENT_DATE_3 = #{event_date_3},
-			,EVENT_DATE_4 = #{event_date_4},
-			,EVENT_PLACE_NAME = #{event_place_name},
-			,EVENT_PLACE_X = #{event_place_x},
-			,EVENT_PLACE_Y = #{event_place_y},
-			,EVENT_COST = #{event_cost},
-			,COST_UNIT = #{cost_unit},
-			,PHONE_NO = #{phone_no},
-			,COMMENT = #{comment}
+			STATUS = #{status},
+			DEADLINE_DATE = #{deadline_date},
+			EVENT_KBN = #{event_kbn},
+			PROPOSER_USER_ID = #{proposer_user_id},
+			EVENT_DATE_1 = #{event_date_1},
+			EVENT_DATE_2 = #{event_date_2},
+			EVENT_DATE_3 = #{event_date_3},
+			EVENT_DATE_4 = #{event_date_4},
+			EVENT_PLACE_NAME = #{event_place_name},
+			EVENT_PLACE_X = #{event_place_x},
+			EVENT_PLACE_Y = #{event_place_y},
+			EVENT_COST = #{event_cost},
+			COST_UNIT = #{cost_unit},
+			PHONE_NO = #{phone_no},
+			COMMENT = #{comment}
+		where EVENT_ID= #{event_id}
 	</update>
 </mapper>

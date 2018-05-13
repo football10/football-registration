@@ -63,13 +63,14 @@
 
 	<update id="updateEventParticipant" parameterType="org.footballregistration.dao.entity.EventParticipantEntity">
 		update EVENT_PARTICIPANT set
-			EVENT_ID = #{event_id},
-			PARTICIPANT_USER_ID = #{participant_user_id},
 			EVENT_DATE_1_FLG = #{event_date_1_flg},
 			EVENT_DATE_2_FLG = #{event_date_2_flg},
 			EVENT_DATE_3_FLG = #{event_date_3_flg},
 			EVENT_DATE_4_FLG = #{event_date_4_flg},
-			COMMENT = #{comment}),
+			COMMENT = #{comment},
 			ANSWER_DTIME = #{answer_dtime}
+		where
+			EVENT_ID= #{event_id}
+			and PARTICIPANT_USER_ID = #{participant_user_id} 
 	</update>
 </mapper>
