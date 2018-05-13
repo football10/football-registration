@@ -53,23 +53,24 @@ public class GetEventService {
 			}
 
 			// 取得自己参加的EventList
-			List<EventInfoEntity> envenList = eventInfoDao.selectEventInfoByUserId(userId);
+			List<EventParticipantEntity> envenList = eventParticipantDao.selectEventParticipantByUserId(userId);
 			response.result.eventCount = envenList.size();
 
 			List<EventInfo> eventList = new ArrayList<EventInfo>();
-			for(EventInfoEntity envenInfo : envenList) {
-				int eventId = envenInfo.getEvent_id();
-
+			for(EventParticipantEntity participantInfo : envenList) {
+				int eventId = participantInfo.getEvent_id();
+				// 取得Event情报
+				EventInfoEntity eventInfo = eventInfoDao.selectEventInfo(eventId);
 				EventInfo ei = new EventInfo();
 				ei.eventId = eventId;
-				ei.eventName = envenInfo.getEvent_name();
-				ei.status = envenInfo.getStatus();
-				ei.eventKbn = envenInfo.getEvent_kbn();
-				ei.eventDate1 = envenInfo.getEvent_date_1();
-				ei.eventDate2 = envenInfo.getEvent_date_2();
-				ei.eventDate3 = envenInfo.getEvent_date_3();
-				ei.eventDate4 = envenInfo.getEvent_date_4();
-				ei.eventPlaceName = envenInfo.getEvent_place_name();
+				ei.eventName = eventInfo.getEvent_name();
+				ei.status = eventInfo.getStatus();
+				ei.eventKbn = eventInfo.getEvent_kbn();
+				ei.eventDate1 = eventInfo.getEvent_date_1();
+				ei.eventDate2 = eventInfo.getEvent_date_2();
+				ei.eventDate3 = eventInfo.getEvent_date_3();
+				ei.eventDate4 = eventInfo.getEvent_date_4();
+				ei.eventPlaceName = eventInfo.getEvent_place_name();
 
 				// 取得参加者的EventList
 				List<EventParticipantEntity> participantList = eventParticipantDao.selectEventParticipantByEventId(eventId);
