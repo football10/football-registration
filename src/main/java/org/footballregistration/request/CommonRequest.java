@@ -5,5 +5,7 @@ public class CommonRequest {
 
 	public class UserInfo {
 		public String userId;
+		public String userName;
+		public String icon;
 	}
 }
