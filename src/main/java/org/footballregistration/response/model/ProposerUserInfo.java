@@ -1,7 +1,8 @@
 package org.footballregistration.response.model;
 
 public class ProposerUserInfo {
-	public long userId;
+	public String userId;
+	public String userName;
 	public String icon;
 	public String comment;
 	public boolean selectEventDate1;
