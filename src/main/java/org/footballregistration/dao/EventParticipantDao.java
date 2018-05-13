@@ -11,6 +11,8 @@ public interface EventParticipantDao {
 	List<EventParticipantEntity> selectEventParticipantByEventId(int eventId);
 
 	List<EventParticipantEntity> selectEventParticipantByUserId(String userId);
+
+	EventParticipantEntity selectEventParticipantByPk(EventParticipantEntity eventParticipantEntity);
 	
 	long insertEventParticipant(EventParticipantEntity eventParticipantEntity);
 	

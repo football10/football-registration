@@ -40,6 +40,21 @@
 		where
 			PARTICIPANT_USER_ID= #{userId}
 	</select>
+	<select id="selectEventParticipantByPk" resultMap="EventParticipantResult" parameterType="org.footballregistration.dao.entity.EventParticipantEntity">
+		select
+			EVENT_ID
+			,PARTICIPANT_USER_ID
+			,EVENT_DATE_1_FLG
+			,EVENT_DATE_2_FLG
+			,EVENT_DATE_3_FLG
+			,EVENT_DATE_4_FLG
+			,COMMENT
+			,ANSWER_DTIME
+		from EVENT_PARTICIPANT
+		where
+			EVENT_ID= #{event_id}
+			and PARTICIPANT_USER_ID = #{participant_user_id} 
+	</select>
 	<insert id="insertEventParticipant" parameterType="org.footballregistration.dao.entity.EventParticipantEntity">
 		insert into EVENT_PARTICIPANT
 			(EVENT_ID
