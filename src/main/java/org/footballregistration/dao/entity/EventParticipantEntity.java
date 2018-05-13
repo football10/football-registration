@@ -18,7 +18,7 @@ public class EventParticipantEntity {
 	public String comment;
 	// 回答时间
 	public String answer_dtime;
-	public long getEvent_id() {
+	public int getEvent_id() {
 		return event_id;
 	}
 	public void setEvent_id(int event_id) {

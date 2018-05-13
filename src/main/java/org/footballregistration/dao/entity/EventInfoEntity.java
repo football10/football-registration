@@ -36,7 +36,7 @@ public class EventInfoEntity {
 	public String phone_no;
 	// 留言
 	public String comment;
-	public long getEvent_id() {
+	public int getEvent_id() {
 		return event_id;
 	}
 	public void setEvent_id(int event_id) {
