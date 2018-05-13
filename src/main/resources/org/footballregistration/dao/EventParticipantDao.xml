@@ -40,7 +40,7 @@
 		where
 			PARTICIPANT_USER_ID= #{userId}
 	</select>
-	<select id="selectEventParticipantByPk" resultMap="EventParticipantResult" parameterType="org.footballregistration.dao.entity.EventParticipantEntity">
+	<select id="selectEventParticipantByPk" resultMap="EventParticipantResult" parameterType="org.footballregistration.dao.parameter.EventParticipantParameter">
 		select
 			EVENT_ID
 			,PARTICIPANT_USER_ID
@@ -89,7 +89,7 @@
 			and PARTICIPANT_USER_ID = #{participant_user_id} 
 	</update>
 	
-	<delete id="deleteEventParticipant" parameterType="org.footballregistration.dao.entity.EventParticipantEntity">
+	<delete id="deleteEventParticipant" parameterType="org.footballregistration.dao.parameter.EventParticipantParameter">
 		delete
 		from EVENT_PARTICIPANT
 		where
