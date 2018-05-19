@@ -37,12 +37,13 @@ public class GetEventService {
 	@Autowired
 	private UserInfoDao userInfoDao;
 
-	public String getEventList(String jsonRequest) {
+	// 参加的Event一览取得
+	public String getProposerEventList(String jsonRequest) {
 
 		Gson gson = new Gson();
 		EventListResponse response = new EventListResponse();
 
-		System.out.println("GetEventListRequest = " + jsonRequest);
+		System.out.println("GetProposerEventListRequest = " + jsonRequest);
 
 		try {
 			GetEventListRequest request = gson.fromJson(jsonRequest, GetEventListRequest.class);
@@ -90,10 +91,67 @@ public class GetEventService {
 		}
 
 		String json = gson.toJson(response);
-		System.out.println("GetEventListResponse = " + json);
+		System.out.println("GetProposerEventListResponse = " + json);
 		return json;
 	}
 
+	// 创建的Event一览取得
+	public String getCreateEventList(String jsonRequest) {
+
+		Gson gson = new Gson();
+		EventListResponse response = new EventListResponse();
+
+		System.out.println("GetCreateEventListRequest = " + jsonRequest);
+
+		try {
+			GetEventListRequest request = gson.fromJson(jsonRequest, GetEventListRequest.class);
+
+			String userId = request.userInfo.userId;
+			if (StringUtils.isEmpty(userId)) {
+				throw new IllegalArgumentException("Request Parameter is Empty : userId");
+			}
+
+			// 取得自己创建的EventList
+			List<EventInfoEntity> envenList = eventInfoDao.selectEventInfoByUserId(userId);
+			response.result.eventCount = envenList.size();
+
+			List<EventInfo> eventList = new ArrayList<EventInfo>();
+			for(EventInfoEntity eventInfo : envenList) {
+				int eventId = eventInfo.getEvent_id();
+				EventInfo ei = new EventInfo();
+				ei.eventId = eventId;
+				ei.eventName = eventInfo.getEvent_name();
+				ei.status = eventInfo.getStatus();
+				ei.eventKbn = eventInfo.getEvent_kbn();
+				ei.eventDate1 = eventInfo.getEvent_date_1();
+				ei.eventDate2 = eventInfo.getEvent_date_2();
+				ei.eventDate3 = eventInfo.getEvent_date_3();
+				ei.eventDate4 = eventInfo.getEvent_date_4();
+				ei.eventPlaceName = eventInfo.getEvent_place_name();
+
+				// 取得参加者的EventList
+				List<EventParticipantEntity> participantList = eventParticipantDao.selectEventParticipantByEventId(eventId);
+				ei.proposerUserCount = participantList.size();
+
+				eventList.add(ei);
+			}
+
+			response.result.eventList = eventList;
+			response.responseCode = Constants.RESPONSE_CODE_OK;
+
+		} catch (Exception e) {
+			response.result = null;
+			response.responseCode = Constants.RESPONSE_CODE_NG;
+			response.errorInfo.message = e.getMessage();
+			e.printStackTrace();
+		}
+
+		String json = gson.toJson(response);
+		System.out.println("GetCreateEventListResponse = " + json);
+		return json;
+	}
+
+	// Event详细取得
 	public String getEventDetail(String jsonRequest) {
 
 		Gson gson = new Gson();
@@ -152,6 +210,8 @@ public class GetEventService {
 			}
 
 			response.result.proposerUserList = proposerUserInfoList;
+			response.responseCode = Constants.RESPONSE_CODE_OK;
+
 		} catch (Exception e) {
 			response.result = null;
 			response.responseCode = Constants.RESPONSE_CODE_NG;

@@ -7,6 +7,7 @@ import org.footballregistration.dao.UserInfoDao;
 import org.footballregistration.dao.entity.EventParticipantEntity;
 import org.footballregistration.dao.entity.UserInfoEntity;
 import org.footballregistration.dao.parameter.EventParticipantParameter;
+import org.footballregistration.request.ProposerDeleteEventRequest;
 import org.footballregistration.request.ProposerEventRequest;
 import org.footballregistration.response.CommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ public class ProposerEventService {
 	@Autowired
 	private UserInfoDao userInfoDao;
 
+	// Event参加
 	public String proposerEvent(String jsonRequest) {
 		Gson gson = new Gson();
 		CommonResponse response = new CommonResponse();
@@ -90,6 +92,46 @@ public class ProposerEventService {
 
 		String json = gson.toJson(response);
 		System.out.println("ProposerEventResponse = " + json);
+		return json;
+	}
+
+	// Event参加删除
+	public String proposerDeleteEvent(String jsonRequest) {
+		Gson gson = new Gson();
+		CommonResponse response = new CommonResponse();
+
+		System.out.println("ProposerDeleteEventRequest = " + jsonRequest);
+
+		try {
+			ProposerDeleteEventRequest request = gson.fromJson(jsonRequest, ProposerDeleteEventRequest.class);
+
+			String userId = request.userInfo.userId;
+			int eventId = request.requestInfo.eventId;
+			if (StringUtils.isEmpty(userId)) {
+				throw new IllegalArgumentException("Request Parameter is Empty : userId");
+			}
+			if (StringUtils.isEmpty(String.valueOf(eventId))) {
+				throw new IllegalArgumentException("Request Parameter is Empty : eventId");
+			}
+
+			EventParticipantParameter param = new EventParticipantParameter();
+			param.setEvent_id(eventId);
+			param.setParticipant_user_id(userId);
+
+			// 删除参加信息
+			eventParticipantDao.deleteEventParticipant(param);
+
+			response.responseCode = Constants.RESPONSE_CODE_OK;
+			response.errorInfo = null;
+
+		} catch (Exception e) {
+			response.responseCode = Constants.RESPONSE_CODE_NG;
+			response.errorInfo.message = e.getMessage();
+			e.printStackTrace();
+		}
+
+		String json = gson.toJson(response);
+		System.out.println("ProposerDeleteEventResponse = " + json);
 		return json;
 	}
 }
