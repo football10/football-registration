@@ -39,6 +39,7 @@
 		from EVENT_PARTICIPANT
 		where
 			PARTICIPANT_USER_ID= #{userId}
+		order by EVENT_ID desc
 	</select>
 	<select id="selectEventParticipantByPk" resultMap="EventParticipantResult" parameterType="org.footballregistration.dao.parameter.EventParticipantParameter">
 		select
@@ -53,7 +54,7 @@
 		from EVENT_PARTICIPANT
 		where
 			EVENT_ID= #{event_id}
-			and PARTICIPANT_USER_ID = #{participant_user_id} 
+			and PARTICIPANT_USER_ID = #{participant_user_id}
 	</select>
 	<insert id="insertEventParticipant" parameterType="org.footballregistration.dao.entity.EventParticipantEntity">
 		insert into EVENT_PARTICIPANT
@@ -86,14 +87,14 @@
 			ANSWER_DTIME = #{answer_dtime}
 		where
 			EVENT_ID= #{event_id}
-			and PARTICIPANT_USER_ID = #{participant_user_id} 
+			and PARTICIPANT_USER_ID = #{participant_user_id}
 	</update>
-	
+
 	<delete id="deleteEventParticipant" parameterType="org.footballregistration.dao.parameter.EventParticipantParameter">
 		delete
 		from EVENT_PARTICIPANT
 		where
 			EVENT_ID= #{event_id}
-			and PARTICIPANT_USER_ID = #{participant_user_id} 
+			and PARTICIPANT_USER_ID = #{participant_user_id}
 	</delete>
 </mapper>

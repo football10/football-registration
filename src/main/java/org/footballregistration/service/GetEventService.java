@@ -54,31 +54,35 @@ public class GetEventService {
 			}
 
 			// 取得自己参加的EventList
-			List<EventParticipantEntity> envenList = eventParticipantDao.selectEventParticipantByUserId(userId);
-			response.result.eventCount = envenList.size();
+			List<EventParticipantEntity> participantEnvenList = eventParticipantDao.selectEventParticipantByUserId(userId);
 
 			List<EventInfo> eventList = new ArrayList<EventInfo>();
-			for(EventParticipantEntity participantInfo : envenList) {
+			for(EventParticipantEntity participantInfo : participantEnvenList) {
 				int eventId = participantInfo.getEvent_id();
 				// 取得Event情报
 				EventInfoEntity eventInfo = eventInfoDao.selectEventInfo(eventId);
-				EventInfo ei = new EventInfo();
-				ei.eventId = eventId;
-				ei.eventName = eventInfo.getEvent_name();
-				ei.status = eventInfo.getStatus();
-				ei.eventKbn = eventInfo.getEvent_kbn();
-				ei.eventDate1 = eventInfo.getEvent_date_1();
-				ei.eventDate2 = eventInfo.getEvent_date_2();
-				ei.eventDate3 = eventInfo.getEvent_date_3();
-				ei.eventDate4 = eventInfo.getEvent_date_4();
-				ei.eventPlaceName = eventInfo.getEvent_place_name();
 
-				// 取得参加者的EventList
-				List<EventParticipantEntity> participantList = eventParticipantDao.selectEventParticipantByEventId(eventId);
-				ei.proposerUserCount = participantList.size();
+				if(eventInfo != null) {
+					EventInfo ei = new EventInfo();
+					ei.eventId = eventId;
+					ei.eventName = eventInfo.getEvent_name();
+					ei.status = eventInfo.getStatus();
+					ei.eventKbn = eventInfo.getEvent_kbn();
+					ei.eventDate1 = eventInfo.getEvent_date_1();
+					ei.eventDate2 = eventInfo.getEvent_date_2();
+					ei.eventDate3 = eventInfo.getEvent_date_3();
+					ei.eventDate4 = eventInfo.getEvent_date_4();
+					ei.eventPlaceName = eventInfo.getEvent_place_name();
 
-				eventList.add(ei);
+					// 取得参加者的EventList
+					List<EventParticipantEntity> participantList = eventParticipantDao.selectEventParticipantByEventId(eventId);
+					ei.proposerUserCount = participantList.size();
+
+					eventList.add(ei);
+				}
 			}
+
+			response.result.eventCount = eventList.size();
 
 			response.result.eventList = eventList;
 			response.responseCode = Constants.RESPONSE_CODE_OK;
@@ -112,11 +116,10 @@ public class GetEventService {
 			}
 
 			// 取得自己创建的EventList
-			List<EventInfoEntity> envenList = eventInfoDao.selectEventInfoByUserId(userId);
-			response.result.eventCount = envenList.size();
+			List<EventInfoEntity> creatEventList = eventInfoDao.selectEventInfoByUserId(userId);
 
 			List<EventInfo> eventList = new ArrayList<EventInfo>();
-			for(EventInfoEntity eventInfo : envenList) {
+			for(EventInfoEntity eventInfo : creatEventList) {
 				int eventId = eventInfo.getEvent_id();
 				EventInfo ei = new EventInfo();
 				ei.eventId = eventId;
@@ -135,6 +138,8 @@ public class GetEventService {
 
 				eventList.add(ei);
 			}
+
+			response.result.eventCount = eventList.size();
 
 			response.result.eventList = eventList;
 			response.responseCode = Constants.RESPONSE_CODE_OK;
@@ -196,10 +201,10 @@ public class GetEventService {
 				proposerUserInfo.userId = eventParticipant.getParticipant_user_id();
 
 				proposerUserInfo.comment = eventParticipant.getComment();
-				proposerUserInfo.selectEventDate1 = Boolean.getBoolean(eventParticipant.event_date_1_flg);
-				proposerUserInfo.selectEventDate2 = Boolean.getBoolean(eventParticipant.event_date_2_flg);
-				proposerUserInfo.selectEventDate3 = Boolean.getBoolean(eventParticipant.event_date_3_flg);
-				proposerUserInfo.selectEventDate4 = Boolean.getBoolean(eventParticipant.event_date_4_flg);
+				proposerUserInfo.selectEventDate1 = Boolean.parseBoolean(eventParticipant.getEvent_date_1_flg());
+				proposerUserInfo.selectEventDate2 = Boolean.parseBoolean(eventParticipant.getEvent_date_2_flg());
+				proposerUserInfo.selectEventDate3 = Boolean.parseBoolean(eventParticipant.getEvent_date_3_flg());
+				proposerUserInfo.selectEventDate4 = Boolean.parseBoolean(eventParticipant.getEvent_date_4_flg());
 
 				// 取得用户详细信息
 				UserInfoEntity userInfo = userInfoDao.selectUserInfo(eventParticipant.getParticipant_user_id());
