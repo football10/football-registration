@@ -184,6 +184,10 @@ public class GetEventService {
 
 			// 取得Event详细情报
 			EventInfoEntity eventInfo = eventInfoDao.selectEventInfo(request.requestInfo.eventId);
+			if (eventInfo == null) {
+				throw new IllegalArgumentException("Not Found Event Detail Info for EventId : " + request.requestInfo.eventId);
+			}
+
 			EventDetailInfo eventDetailInfo = new EventDetailInfo();
 			eventDetailInfo.eventId = eventInfo.getEvent_id();
 			eventDetailInfo.eventName = eventInfo.getEvent_name();
