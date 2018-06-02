@@ -9,6 +9,8 @@ import java.net.URL;
 import org.footballregistration.common.Constants;
 import org.footballregistration.response.OpenIdResponse;
 import org.footballregistration.response.model.OpenIdInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,8 @@ import com.google.gson.Gson;
 @Service
 @Transactional
 public class OpenIdService {
+
+	static final Logger log = LoggerFactory.getLogger(OpenIdService.class);
 
 	public String getOpenId(String code) {
 
@@ -66,10 +70,13 @@ public class OpenIdService {
 			e.printStackTrace();
 			response.result = null;
 			response.responseCode = Constants.RESPONSE_CODE_NG;
+
+			log.error(e.getMessage(), e);
 		}
 
 		String json = gson.toJson(response);
-		System.out.println("GetOpenIdResponse = " + json);
+		log.info("GetOpenIdResponse = " + json);
+
 		return json;
 	}
 

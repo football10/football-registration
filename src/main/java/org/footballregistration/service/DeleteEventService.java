@@ -5,6 +5,8 @@ import org.footballregistration.common.Constants;
 import org.footballregistration.dao.EventInfoDao;
 import org.footballregistration.request.DeleteEventRequest;
 import org.footballregistration.response.CommonResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +17,8 @@ import com.google.gson.Gson;
 @Transactional
 public class DeleteEventService {
 
+	static final Logger log = LoggerFactory.getLogger(DeleteEventService.class);
+
 	@Autowired
 	private EventInfoDao eventInfoDao;
 
@@ -22,7 +26,7 @@ public class DeleteEventService {
 		Gson gson = new Gson();
 		CommonResponse response = new CommonResponse();
 
-		System.out.println("DeleteEventRequest = " + jsonRequest);
+		log.info("DeleteEventRequest = " + jsonRequest);
 
 		try {
 			DeleteEventRequest request = gson.fromJson(jsonRequest, DeleteEventRequest.class);
@@ -39,10 +43,13 @@ public class DeleteEventService {
 			response.responseCode = Constants.RESPONSE_CODE_NG;
 			response.errorInfo.message = e.getMessage();
 			e.printStackTrace();
+
+			log.error(e.getMessage(), e);
 		}
 
 		String json = gson.toJson(response);
-		System.out.println("DeleteEventResponse = " + json);
+		log.info("DeleteEventResponse = " + json);
+
 		return json;
 	}
 }

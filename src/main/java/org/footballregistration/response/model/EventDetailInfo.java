@@ -25,6 +25,8 @@ public class EventDetailInfo {
 	public String eventPlaceY;
 	// 费用
 	public long eventCost;
+	// 费用单位
+	public String costUnit;
 	// 电话号码(000-0000-0000)
 	public String phoneNo;
 	// 备注

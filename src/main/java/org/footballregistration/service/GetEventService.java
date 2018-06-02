@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.footballregistration.common.Constants;
+import org.footballregistration.common.Util;
 import org.footballregistration.dao.EventInfoDao;
 import org.footballregistration.dao.EventParticipantDao;
 import org.footballregistration.dao.UserInfoDao;
@@ -18,6 +19,8 @@ import org.footballregistration.response.EventListResponse;
 import org.footballregistration.response.model.EventDetailInfo;
 import org.footballregistration.response.model.EventInfo;
 import org.footballregistration.response.model.ProposerUserInfo;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +30,8 @@ import com.google.gson.Gson;
 @Service
 @Transactional
 public class GetEventService {
+
+	static final Logger log = LoggerFactory.getLogger(GetEventService.class);
 
 	@Autowired
 	private EventInfoDao eventInfoDao;
@@ -43,7 +48,7 @@ public class GetEventService {
 		Gson gson = new Gson();
 		EventListResponse response = new EventListResponse();
 
-		System.out.println("GetProposerEventListRequest = " + jsonRequest);
+		log.info("GetProposerEventListRequest = " + jsonRequest);
 
 		try {
 			GetEventListRequest request = gson.fromJson(jsonRequest, GetEventListRequest.class);
@@ -66,7 +71,7 @@ public class GetEventService {
 					EventInfo ei = new EventInfo();
 					ei.eventId = eventId;
 					ei.eventName = eventInfo.getEvent_name();
-					ei.status = eventInfo.getStatus();
+					ei.status = Util.getStatus(eventInfo.getDeadline_date());
 					ei.eventKbn = eventInfo.getEvent_kbn();
 					ei.eventDate1 = eventInfo.getEvent_date_1();
 					ei.eventDate2 = eventInfo.getEvent_date_2();
@@ -92,10 +97,13 @@ public class GetEventService {
 			response.responseCode = Constants.RESPONSE_CODE_NG;
 			response.errorInfo.message = e.getMessage();
 			e.printStackTrace();
+
+			log.error(e.getMessage(), e);
 		}
 
 		String json = gson.toJson(response);
-		System.out.println("GetProposerEventListResponse = " + json);
+		log.info("GetProposerEventListResponse = " + json);
+
 		return json;
 	}
 
@@ -105,7 +113,7 @@ public class GetEventService {
 		Gson gson = new Gson();
 		EventListResponse response = new EventListResponse();
 
-		System.out.println("GetCreateEventListRequest = " + jsonRequest);
+		log.info("GetCreateEventListRequest = " + jsonRequest);
 
 		try {
 			GetEventListRequest request = gson.fromJson(jsonRequest, GetEventListRequest.class);
@@ -124,7 +132,7 @@ public class GetEventService {
 				EventInfo ei = new EventInfo();
 				ei.eventId = eventId;
 				ei.eventName = eventInfo.getEvent_name();
-				ei.status = eventInfo.getStatus();
+				ei.status = Util.getStatus(eventInfo.getDeadline_date());
 				ei.eventKbn = eventInfo.getEvent_kbn();
 				ei.eventDate1 = eventInfo.getEvent_date_1();
 				ei.eventDate2 = eventInfo.getEvent_date_2();
@@ -149,10 +157,13 @@ public class GetEventService {
 			response.responseCode = Constants.RESPONSE_CODE_NG;
 			response.errorInfo.message = e.getMessage();
 			e.printStackTrace();
+
+			log.error(e.getMessage(), e);
 		}
 
 		String json = gson.toJson(response);
-		System.out.println("GetCreateEventListResponse = " + json);
+		log.info("GetCreateEventListResponse = " + json);
+
 		return json;
 	}
 
@@ -161,35 +172,34 @@ public class GetEventService {
 
 		Gson gson = new Gson();
 		EventDetailResponse response = new EventDetailResponse();
-		System.out.println("GetEventDetailRequest = " + jsonRequest);
+
+		log.info("GetEventDetailRequest = " + jsonRequest);
 
 		try {
 			GetEventDetailRequest request = gson.fromJson(jsonRequest, GetEventDetailRequest.class);
 			// ParameterCheck
-			if (StringUtils.isEmpty(request.userInfo.userId)) {
-				throw new IllegalArgumentException("Request Parameter is Empty : userId");
-			}
 			if (StringUtils.isEmpty(String.valueOf(request.requestInfo.eventId))) {
 				throw new IllegalArgumentException("Request Parameter is Empty : eventId");
 			}
 
 			// 取得Event详细情报
-			EventInfoEntity envenInfo = eventInfoDao.selectEventInfo(request.requestInfo.eventId);
+			EventInfoEntity eventInfo = eventInfoDao.selectEventInfo(request.requestInfo.eventId);
 			EventDetailInfo eventDetailInfo = new EventDetailInfo();
-			eventDetailInfo.eventId = envenInfo.getEvent_id();
-			eventDetailInfo.eventName = envenInfo.getEvent_name();
-			eventDetailInfo.status = envenInfo.getStatus();
-			eventDetailInfo.eventKbn = envenInfo.getEvent_kbn();
-			eventDetailInfo.eventDate1 = envenInfo.getEvent_date_1();
-			eventDetailInfo.eventDate2 = envenInfo.getEvent_date_2();
-			eventDetailInfo.eventDate3 = envenInfo.getEvent_date_3();
-			eventDetailInfo.eventDate4 = envenInfo.getEvent_date_4();
-			eventDetailInfo.eventPlaceName = envenInfo.getEvent_place_name();
-			eventDetailInfo.eventPlaceX = envenInfo.getEvent_place_x();
-			eventDetailInfo.eventPlaceY = envenInfo.getEvent_place_y();
-			eventDetailInfo.eventCost = envenInfo.getEvent_cost();
-			eventDetailInfo.phoneNo = envenInfo.getPhone_no();
-			eventDetailInfo.comment = envenInfo.getComment();
+			eventDetailInfo.eventId = eventInfo.getEvent_id();
+			eventDetailInfo.eventName = eventInfo.getEvent_name();
+			eventDetailInfo.status = Util.getStatus(eventInfo.getDeadline_date());
+			eventDetailInfo.eventKbn = eventInfo.getEvent_kbn();
+			eventDetailInfo.eventDate1 = eventInfo.getEvent_date_1();
+			eventDetailInfo.eventDate2 = eventInfo.getEvent_date_2();
+			eventDetailInfo.eventDate3 = eventInfo.getEvent_date_3();
+			eventDetailInfo.eventDate4 = eventInfo.getEvent_date_4();
+			eventDetailInfo.eventPlaceName = eventInfo.getEvent_place_name();
+			eventDetailInfo.eventPlaceX = eventInfo.getEvent_place_x();
+			eventDetailInfo.eventPlaceY = eventInfo.getEvent_place_y();
+			eventDetailInfo.eventCost = eventInfo.getEvent_cost();
+			eventDetailInfo.costUnit = eventInfo.getCost_unit();
+			eventDetailInfo.phoneNo = eventInfo.getPhone_no();
+			eventDetailInfo.comment = eventInfo.getComment();
 			response.result.eventDetailInfo = eventDetailInfo;
 
 			// 取得参加者的EventList
@@ -222,10 +232,13 @@ public class GetEventService {
 			response.responseCode = Constants.RESPONSE_CODE_NG;
 			response.errorInfo.message = e.getMessage();
 			e.printStackTrace();
+
+			log.error(e.getMessage(), e);
 		}
 
 		String json = gson.toJson(response);
-		System.out.println("GetEventDetailResponse = " + json);
+		log.info("GetEventDetailResponse = " + json);
+
 		return json;
 	}
 

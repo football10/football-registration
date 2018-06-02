@@ -10,6 +10,8 @@ import org.footballregistration.dao.parameter.EventParticipantParameter;
 import org.footballregistration.request.ProposerDeleteEventRequest;
 import org.footballregistration.request.ProposerEventRequest;
 import org.footballregistration.response.CommonResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +21,8 @@ import com.google.gson.Gson;
 @Service
 @Transactional
 public class ProposerEventService {
+
+	static final Logger log = LoggerFactory.getLogger(ProposerEventService.class);
 
 	@Autowired
 	private EventParticipantDao eventParticipantDao;
@@ -31,7 +35,7 @@ public class ProposerEventService {
 		Gson gson = new Gson();
 		CommonResponse response = new CommonResponse();
 
-		System.out.println("ProposerEventRequest = " + jsonRequest);
+		log.info("ProposerEventRequest = " + jsonRequest);
 
 		try {
 			ProposerEventRequest request = gson.fromJson(jsonRequest, ProposerEventRequest.class);
@@ -43,6 +47,9 @@ public class ProposerEventService {
 			}
 			if (StringUtils.isEmpty(String.valueOf(eventId))) {
 				throw new IllegalArgumentException("Request Parameter is Empty : eventId");
+			}
+			if (StringUtils.isEmpty(request.userInfo.userName) || StringUtils.isEmpty(request.userInfo.icon)) {
+				throw new IllegalArgumentException("Request Parameter is Empty : userName or icon");
 			}
 
 			UserInfoEntity userInfo = new UserInfoEntity();
@@ -88,10 +95,13 @@ public class ProposerEventService {
 			response.responseCode = Constants.RESPONSE_CODE_NG;
 			response.errorInfo.message = e.getMessage();
 			e.printStackTrace();
+
+			log.error(e.getMessage(), e);
 		}
 
 		String json = gson.toJson(response);
-		System.out.println("ProposerEventResponse = " + json);
+		log.info("ProposerEventResponse = " + json);
+
 		return json;
 	}
 
@@ -100,7 +110,7 @@ public class ProposerEventService {
 		Gson gson = new Gson();
 		CommonResponse response = new CommonResponse();
 
-		System.out.println("ProposerDeleteEventRequest = " + jsonRequest);
+		log.info("ProposerDeleteEventRequest = " + jsonRequest);
 
 		try {
 			ProposerDeleteEventRequest request = gson.fromJson(jsonRequest, ProposerDeleteEventRequest.class);
@@ -128,10 +138,11 @@ public class ProposerEventService {
 			response.responseCode = Constants.RESPONSE_CODE_NG;
 			response.errorInfo.message = e.getMessage();
 			e.printStackTrace();
+			log.error(e.getMessage(), e);
 		}
 
 		String json = gson.toJson(response);
-		System.out.println("ProposerDeleteEventResponse = " + json);
+		log.info("ProposerDeleteEventResponse = " + json);
 		return json;
 	}
 }

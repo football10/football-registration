@@ -6,6 +6,8 @@ import org.footballregistration.dao.EventInfoDao;
 import org.footballregistration.dao.entity.EventInfoEntity;
 import org.footballregistration.request.UpdateEventRequest;
 import org.footballregistration.response.CommonResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +18,8 @@ import com.google.gson.Gson;
 @Transactional
 public class UpdateEventService {
 
+	static final Logger log = LoggerFactory.getLogger(UpdateEventService.class);
+
 	@Autowired
 	private EventInfoDao eventInfoDao;
 
@@ -25,7 +29,7 @@ public class UpdateEventService {
 		Gson gson = new Gson();
 		CommonResponse response = new CommonResponse();
 
-		System.out.println("GetEventListRequest = " + jsonRequest);
+		log.info("GetEventListRequest = " + jsonRequest);
 
 		try {
 			UpdateEventRequest request = gson.fromJson(jsonRequest, UpdateEventRequest.class);
@@ -59,10 +63,12 @@ public class UpdateEventService {
 			response.responseCode = Constants.RESPONSE_CODE_NG;
 			response.errorInfo.message = e.getMessage();
 			e.printStackTrace();
+			log.error(e.getMessage(), e);
 		}
 
 		String json = gson.toJson(response);
-		System.out.println("UpdateEvent = " + json);
+		log.info("UpdateEvent = " + json);
+
 		return json;
 	}
 
